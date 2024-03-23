@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const router = require("./app/routes/user_Route");
 
 //initialize app
 const app = express();
@@ -15,6 +16,8 @@ corsOptions = {
 };
 
 cors(corsOptions);
+
+app.use("/api", router);
 
 app.listen(PORT, (err) => {
   if (err) {
