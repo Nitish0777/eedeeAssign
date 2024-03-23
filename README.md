@@ -20,7 +20,8 @@ Before you begin, ensure you have the following installed:
 2. Navigate to the project directory:
 
     ```bash
-    cd folder Name
+    cd client for frontend
+    cd server for backend
     ```
 
 3. Install dependencies:
