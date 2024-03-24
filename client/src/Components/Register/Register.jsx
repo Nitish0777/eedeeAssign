@@ -13,11 +13,17 @@ const RegisterForm = () => {
   const registerUser = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:7000/api/register", {
-        name,
-        email,
-        password,
-      });
+      const response = await axios.post(
+        "http://localhost:7000/api/register",
+        {
+          name,
+          email,
+          password,
+        },
+        {
+          withCredentials: true,
+        }
+      );
       const data = response.data;
       console.log(data);
       if (data.error) {

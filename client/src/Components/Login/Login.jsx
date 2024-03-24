@@ -13,11 +13,17 @@ const LoginForm = () => {
   const loginUser = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:7000/api/login", {
-        email,
-        password,
-      });
-      const data = response;
+      const response = await axios.post(
+        "http://localhost:7000/api/login",
+        {
+          email,
+          password,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      const data = response.data;
       console.log(data);
 
       if (data.success) {
