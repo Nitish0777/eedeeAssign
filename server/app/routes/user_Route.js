@@ -3,9 +3,7 @@ const User = require("../controllers/user_controller");
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.send("In home page");
-});
+router.get("/getData", User.fetchUserData);
 
 // Create a Signup Route
 router.post("/register", User.create);

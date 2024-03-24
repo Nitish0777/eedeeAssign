@@ -15,12 +15,4 @@ connection.connect((err) => {
   console.log("Connected to Database");
 });
 
-connection.query("SELECT * FROM User", (err, rows) => {
-  if (err) {
-    console.log("Error in Fetching Data", err);
-    return;
-  }
-  console.log("Data Fetched Successfully", rows);
-});
-
 module.exports = connection;
