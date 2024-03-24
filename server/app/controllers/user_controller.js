@@ -1,6 +1,6 @@
 const User = require("../models/user.model.js");
 const connection = require("../models/db.js");
-
+const jwt = require("jsonwebtoken");
 // Function to fetch user data
 const fetchUserData = (req, res) => {
   connection.query("SELECT * FROM User", (err, result) => {
@@ -10,7 +10,10 @@ const fetchUserData = (req, res) => {
       return;
     }
     console.log("Fetched data successfully");
-    return res.status(200).send(result);
+    return res.status(200).send({
+      success: true,
+      data: result,
+    });
   });
 };
 
@@ -40,10 +43,36 @@ const create = (req, res) => {
         }
 
         console.log("created user: ", data);
-        return res.status(200).send(data, { message: "Signup successfully" });
+        return res.status(200).send({ success: true, data: data });
       });
     }
   );
 };
 
-module.exports = { fetchUserData, create, User };
+const loginController = (req, res) => {
+  const sql = "SELECT * FROM User WHERE `email` = ? AND `password` = ?";
+  const values = [req.body.email, req.body.password];
+
+  connection.query(sql, values, (err, data) => {
+    if (err) {
+      console.log("error: ", err);
+      return res.status(500).send({
+        success: false,
+        message: "Error occurred while fetching data",
+      });
+    }
+    if (data.length === 0) {
+      return res
+        .status(400)
+        .send({ success: false, message: "Invalid email or password" });
+    }
+    const email = data[0].email;
+    const token = jwt.sign({ email }, "my_secret_key", {
+      expiresIn: "24h",
+    });
+    res.cookie("token", token, { httpOnly: true });
+    return res.status(200).send({ success: true, data: data });
+  });
+};
+
+module.exports = { fetchUserData, create, User, loginController };
