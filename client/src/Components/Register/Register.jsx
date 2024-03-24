@@ -21,9 +21,9 @@ const RegisterForm = () => {
       const data = response.data;
       console.log(data);
       if (data.error) {
-        toast.error(data.error);
+        toast.error("User Already Exists");
       } else {
-        toast.success(data.message);
+        toast.success("User Registered Successfully");
         navigate("/login");
       }
     } catch (error) {
