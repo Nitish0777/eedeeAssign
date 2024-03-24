@@ -9,23 +9,20 @@ const app = express();
 
 dotenv.config();
 
+// Apply CORS middleware
+app.use(cors());
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 const PORT = process.env.PORT || 3001;
 
-corsOptions = {
-  origin: "http://localhost:7000",
-  optionsSuccessStatus: 200,
-};
-
-cors(corsOptions);
-
 app.use("/api", router);
 
 app.listen(PORT, (err) => {
   if (err) {
-    console.log(`Error in Listening app on port ${PORT}`);
+    console.error(`Error in Listening app on port ${PORT}`, err);
+    return;
   }
   console.log(`App is Listening on port ${PORT}`);
 });

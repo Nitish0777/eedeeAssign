@@ -40,7 +40,7 @@ const create = (req, res) => {
         }
 
         console.log("created user: ", data);
-        return res.status(200).send(data);
+        return res.status(200).send(data, { message: "Signup successfully" });
       });
     }
   );
