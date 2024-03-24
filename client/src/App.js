@@ -2,6 +2,7 @@ import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import LoginForm from "./Components/Login/Login";
 import RegisterForm from "./Components/Register/Register";
+import axios from "axios";
 
 function App() {
   return (
