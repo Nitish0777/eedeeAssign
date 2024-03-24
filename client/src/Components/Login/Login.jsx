@@ -8,21 +8,24 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
+  axios.defaults.withCredentials = true;
 
   const loginUser = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://127.0.0.1:7000/api/login", {
+      const response = await axios.post("http://localhost:7000/api/login", {
         email,
         password,
       });
-      const data = response.data;
+      const data = response;
       console.log(data);
-      if (data.error) {
-        toast.error("User Already Exists");
-      } else {
+
+      if (data.success) {
         toast.success("User Registered Successfully");
+        localStorage.setItem("token", data.token);
         navigate("/");
+      } else {
+        toast.error("User Already Exists");
       }
     } catch (error) {
       console.log(error);
