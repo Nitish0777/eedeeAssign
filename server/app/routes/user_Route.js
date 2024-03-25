@@ -18,6 +18,11 @@ router.get("/secure-data", authenticate, (req, res) => {
     .send({ success: true, message: "Access granted", user: req.user });
 });
 
+// /api/scores
+router.post("/scores", authenticate, User.saveScore);
+
+router.get("/leaderboard", authenticate, User.getLeaderboard);
+
 router.post("/logout", (req, res) => {
   res.clearCookie("token");
   return res

@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 const authenticate = (req, res, next) => {
+  console.log("Cookies: ", req.cookies);
   const token = req.cookies.token;
 
   if (!token) {
@@ -12,6 +13,7 @@ const authenticate = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, "my_secret_key");
     req.user = decoded;
+    console.log("Decoded user:", decoded);
     next();
   } catch (error) {
     return res

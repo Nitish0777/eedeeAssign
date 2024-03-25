@@ -3,6 +3,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const router = require("./app/routes/user_Route");
 const connectDb = require("./app/models/db");
+const cookieParser = require("cookie-parser");
 
 //initialize app
 const app = express();
@@ -16,6 +17,7 @@ app.use(express.urlencoded({ extended: false }));
 
 const PORT = process.env.PORT || 3001;
 
+app.use(cookieParser());
 app.use("/api", router);
 
 app.listen(PORT, (err) => {
