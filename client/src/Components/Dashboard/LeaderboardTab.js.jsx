@@ -4,14 +4,18 @@ import LogoutButton from "../Login/Logout";
 
 const LeaderboardTab = () => {
   const [leaderboardData, setLeaderboardData] = useState([]);
-  const [selectedTimeWindow, setSelectedTimeWindow] = useState("5m");
+  const [selectedTimeWindow, setSelectedTimeWindow] = useState("5min");
 
   const fetchLeaderboardData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:7000/api/leaderboard?timeWindow=${selectedTimeWindow}`
+        `http://localhost:7000/api/leaderboard?timeWindow=${selectedTimeWindow}`,
+        {
+          withCredentials: true,
+        }
       );
-      setLeaderboardData(response.data);
+      console.log(response.data.leaderboard);
+      setLeaderboardData(response.data.leaderboard); // Update state with leaderboard data
     } catch (error) {
       console.error("Error fetching leaderboard data:", error);
     }
@@ -32,41 +36,41 @@ const LeaderboardTab = () => {
       <div className="flex justify-center space-x-4">
         <button
           className={`${
-            selectedTimeWindow === "5m"
+            selectedTimeWindow === "5min"
               ? "bg-blue-500 text-white"
               : "bg-gray-200 text-gray-700"
           } px-4 py-2 rounded-md`}
-          onClick={() => handleTimeWindowChange("5m")}
+          onClick={() => handleTimeWindowChange("5min")}
         >
           5 minutes
         </button>
         <button
           className={`${
-            selectedTimeWindow === "10m"
+            selectedTimeWindow === "10min"
               ? "bg-blue-500 text-white"
               : "bg-gray-200 text-gray-700"
           } px-4 py-2 rounded-md`}
-          onClick={() => handleTimeWindowChange("10m")}
+          onClick={() => handleTimeWindowChange("10min")}
         >
           10 minutes
         </button>
         <button
           className={`${
-            selectedTimeWindow === "30m"
+            selectedTimeWindow === "30min"
               ? "bg-blue-500 text-white"
               : "bg-gray-200 text-gray-700"
           } px-4 py-2 rounded-md`}
-          onClick={() => handleTimeWindowChange("30m")}
+          onClick={() => handleTimeWindowChange("30min")}
         >
           30 minutes
         </button>
         <button
           className={`${
-            selectedTimeWindow === "1h"
+            selectedTimeWindow === "1hr"
               ? "bg-blue-500 text-white"
               : "bg-gray-200 text-gray-700"
           } px-4 py-2 rounded-md`}
-          onClick={() => handleTimeWindowChange("1h")}
+          onClick={() => handleTimeWindowChange("1hr")}
         >
           1 hour
         </button>
@@ -83,11 +87,9 @@ const LeaderboardTab = () => {
           <tbody>
             {leaderboardData.map((entry, index) => (
               <tr key={index}>
-                <td className="border px-4 py-2">{entry.user}</td>
+                <td className="border px-4 py-2">{entry.name}</td>
+                <td className="border px-4 py-2">{entry.points * 10}</td>
                 <td className="border px-4 py-2">{entry.points}</td>
-                <td className="border px-4 py-2">
-                  {entry.blueTrianglesClicked}
-                </td>
               </tr>
             ))}
           </tbody>

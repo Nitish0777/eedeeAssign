@@ -2,11 +2,13 @@
 import React, { useState, useEffect } from "react";
 import Confetti from "react-confetti";
 import { Howl } from "howler";
+import axios from "axios";
 import LogoutButton from "../Login/Logout";
 
 const GamePage = () => {
   const [shapes, setShapes] = useState([]);
   const [score, setScore] = useState(0);
+  const [saveStatus, setSaveStatus] = useState({ success: false, message: "" });
 
   const playSound = () => {
     const sound = new Howl({
@@ -18,9 +20,30 @@ const GamePage = () => {
   const handleShapeClick = (shape) => {
     if (shape.color === "blue" && shape.type === "triangle") {
       setScore(score + 10);
-      // Burst confetti effect
+      saveScoreToDatabase(); // Save score to the database
     } else {
       playSound();
+    }
+  };
+
+  const saveScoreToDatabase = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:7000/api/scores",
+        {
+          score: score + 10,
+          shapeType: "triangle",
+          shapeColor: "blue",
+        },
+        {
+          withCredentials: true, // Send cookies with the request
+        }
+      );
+      console.log(response);
+      setSaveStatus({ success: true, message: "Score saved successfully" });
+    } catch (error) {
+      console.error("Error saving score:", error);
+      setSaveStatus({ success: false, message: "Error saving score" });
     }
   };
 
@@ -69,7 +92,8 @@ const GamePage = () => {
         ))}
       </div>
       <div className="mt-4 text-lg font-bold">Score: {score}</div>
-      {/* Render confetti component here */}
+      {saveStatus.success && <Confetti />}
+      {saveStatus.message && <div>{saveStatus.message}</div>}
     </div>
   );
 };
